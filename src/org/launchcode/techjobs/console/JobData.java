@@ -10,6 +10,8 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by LaunchCode
@@ -69,17 +71,38 @@ public class JobData {
 
         // load data, if not already loaded
         loadData();
-
+        //Creating a pattern to test
+        Pattern pattern = Pattern.compile(value, Pattern.CASE_INSENSITIVE);
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
 
         for (HashMap<String, String> row : allJobs) {
 
             String aValue = row.get(column);
-
-            if (aValue.contains(value)) {
+            // Testing pattern
+            Matcher matcher = pattern.matcher(aValue);
+            if (matcher.find()) {
                 jobs.add(row);
             }
         }
+
+        return jobs;
+    }
+
+    public static ArrayList<HashMap<String, String>> findByValue(String value){
+
+        loadData();
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+        //Creating a pattern to test
+        Pattern pattern = Pattern.compile(value, Pattern.CASE_INSENSITIVE);
+
+        for (HashMap<String, String> row : allJobs){
+            // Testing pattern
+            Matcher matcher = pattern.matcher(row.toString());
+            if(matcher.find()){
+                jobs.add(row);
+            }
+        }
+
 
         return jobs;
     }
